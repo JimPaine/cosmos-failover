@@ -1,0 +1,21 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Add a new Item</h1>
+
+    <form method="post">
+        <label>Partion Key</label>
+        <input id="key" asp-for="PartionKey" />
+
+        <label>Other Data</label>
+        <input id="other" asp-for="OtherData">
+
+        <button asp-page="Index">Add</button>
+    </form>
+
+    <h1 class="display-4">Existing Items</h1>
+</div>
