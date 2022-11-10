@@ -64,4 +64,5 @@ resource app 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
-output app_id string = app.identity.principalId
+output app_principalId string = app.identity.principalId
+output app_id string = app.id

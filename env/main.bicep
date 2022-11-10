@@ -55,11 +55,11 @@ module role 'roles.bicep' = [for (region, index) in regions: {
   scope: cosmos_group
 
   params: {
-    id: app[index].outputs.app_id
+    id: app[index].outputs.app_principalId
     cosmos_name: cosmos.outputs.name
   }
 }]
 
-// code
-// dummy data
-// choas studios
+output app_ids array = [for index in range(0, length(regions)): {
+  id: app[index].outputs.app_id
+}]
