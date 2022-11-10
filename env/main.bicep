@@ -60,6 +60,6 @@ module role 'roles.bicep' = [for (region, index) in regions: {
   }
 }]
 
-output app_ids array = [for index in range(0, length(regions)): {
+output apps array = [for index in range(0, length(regions)): {
   id: app[index].outputs.app_id
 }]
