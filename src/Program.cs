@@ -8,15 +8,16 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddSingleton<CosmosClient>(
     o => new CosmosClient(
-            builder.Configuration["DEPLOYED_REGION"],
+            builder.Configuration["DEPLOYED_REGION"] ?? throw new Exception("Missing DEPLOYED_REGION configuration"),
             new DefaultAzureCredential(),
-            new CosmosClientOptions { ApplicationRegion = builder.Configuration["COSMOS_URI"] }
+            new CosmosClientOptions { ApplicationRegion = builder.Configuration["COSMOS_URI"] ?? throw new Exception("Missing COSMOS_URI configuration"),}
     )
 );
 
-builder.Services.AddTransient<Container>(
-    o => o.GetService<CosmosClient>().GetContainer(builder.Configuration["COSMOS_DB_NAME"], builder.Configuration["COSMOS_CONTAINER_NAME"])
-);
+builder.Services.AddTransient<Container>(o => {
+    var client = o.GetService<CosmosClient>() ?? throw new Exception("Missing required COSMOS Client");
+    return client.GetContainer(builder.Configuration["COSMOS_DB_NAME"], builder.Configuration["COSMOS_CONTAINER_NAME"]);
+});
 
 var app = builder.Build();
 

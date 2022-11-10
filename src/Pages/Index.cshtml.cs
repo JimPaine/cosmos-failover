@@ -9,10 +9,10 @@ public class IndexModel : PageModel
 {
     [Required]
     [Display(Name = "Partion Key")]
-    public string PartionKey { get; set; }
+    public string? PartionKey { get; set; }
 
     [Required]
-    public string OtherData { get; set; }
+    public string? OtherData { get; set; }
 
     private readonly ILogger<IndexModel> logger;
     private readonly Container container;
