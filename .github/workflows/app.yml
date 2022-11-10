@@ -1,4 +1,4 @@
-name: cosmos-failover-env
+name: cosmos-failover-app
 
 on:
   workflow-displatch:
