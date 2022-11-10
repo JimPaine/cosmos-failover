@@ -1,7 +1,7 @@
 name: cosmos-failover-app
 
 on:
-  workflow-displatch:
+  workflow-dispatch:
 
 permissions:
   contents: read
