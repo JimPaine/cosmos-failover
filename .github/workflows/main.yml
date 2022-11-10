@@ -35,6 +35,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
       - run: |
           IDS=$(echo ${{ needs.env.outputs.apps}} | jq -r '[.[].id] | join(" ")')
           az webapp up --ids $IDS
