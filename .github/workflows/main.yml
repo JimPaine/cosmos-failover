@@ -1,0 +1,29 @@
+name: cosmos-failover
+
+env:
+  DEFAULT_REGION: northeurope
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  env:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - uses: azure/arm-deploy@v1
+        with:
+          scope: subscription
+          region: ${{ env.DEFAULT_REGION }}
+          template: env/main.bicep
+          deploymentMode: Incremental
+          deploymentName: deploy${{ github.RUN_NUMBER }}
+
+
