@@ -8,8 +8,7 @@ resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' existing = {
 }
 
 resource ra 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2022-08-15' = {
-  name: guid('sqlrole', subscription().id, resourceGroup().id, cosmos.id, id)
-
+  name: 'dataContribRoleForApp'
   parent: cosmos
 
   properties: {
