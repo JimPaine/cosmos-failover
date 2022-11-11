@@ -54,7 +54,7 @@ module app 'app.bicep' = [for (region, index) in regions_lower_spaceless: {
   name: '${region.value}-app'
   scope: groups[index]
   params: {
-    location: groups[index].location
+    location: regions[index]
     compute_subnet_id: networks[index].outputs.compute_subnet_id
     cosmos_uri: networks[index].outputs.cosmos_uri
     cosmos_db_name: cosmos.outputs.db_name
