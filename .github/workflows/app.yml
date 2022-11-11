@@ -14,7 +14,10 @@ jobs:
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - run: az webapp up --ids ${{ secrets.APP_IDS }} --os-type linux
+      - run: |
+          dotnet publish -o publish
+          cd publish
+          az webapp up --ids ${{ secrets.APP_IDS }} --os-type linux
         working-directory: src/
 
 
