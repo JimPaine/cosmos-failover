@@ -8,9 +8,9 @@ resource workspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
 
   properties: {
     sku: {
-      name: 'Free'
+      name: 'PerGB2018'
     }
-    retentionInDays: 7
+    retentionInDays: 90
   }
 }
 
