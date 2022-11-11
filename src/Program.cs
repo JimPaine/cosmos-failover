@@ -9,9 +9,9 @@ builder.Services.AddApplicationInsightsTelemetry();
 
 builder.Services.AddSingleton<CosmosClient>(
     o => new CosmosClient(
-            builder.Configuration["DEPLOYED_REGION"] ?? throw new Exception("Missing DEPLOYED_REGION configuration"),
+            builder.Configuration["COSMOS_URI"] ?? throw new Exception("Missing COSMOS_URI configuration"),
             new DefaultAzureCredential(),
-            new CosmosClientOptions { ApplicationRegion = builder.Configuration["COSMOS_URI"] ?? throw new Exception("Missing COSMOS_URI configuration"),}
+            new CosmosClientOptions { ApplicationRegion = builder.Configuration["DEPLOYED_REGION"] ?? throw new Exception("Missing DEPLOYED_REGION configuration"),}
     )
 );
 
