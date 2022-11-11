@@ -14,6 +14,6 @@ resource ra 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2022-08-15
   properties: {
     roleDefinitionId: '${cosmos.id}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002'
     principalId: id
-    scope: '/'
+    scope: cosmos.id
   }
 }
