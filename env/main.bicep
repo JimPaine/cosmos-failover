@@ -56,6 +56,7 @@ module app 'app.bicep' = [for (region, index) in regions: {
     cosmos_db_name: cosmos.outputs.db_name
     cosmos_container_name: cosmos.outputs.container_name
     app_insights_key: insights[index].outputs.app_insights_key
+    app_insights_connection_string: insights[index].outputs.app_insights_connection_string
   }
 }]
 

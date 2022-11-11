@@ -6,6 +6,7 @@ param cosmos_uri string
 param cosmos_db_name string
 param cosmos_container_name string
 param app_insights_key string
+param app_insights_connection_string string
 
 var suffix = uniqueString(subscription().id, resourceGroup().id)
 
@@ -63,6 +64,10 @@ resource app 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
           value: app_insights_key
+        }
+        {
+          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+          value: app_insights_connection_string
         }
       ]
     }
