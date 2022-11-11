@@ -16,7 +16,9 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - run: |
           dotnet publish -o publish
-          az webapp up --ids ${{ secrets.APP_IDS }} --os-type linux
+          cd publish
+          zip -r publish.zip *
+          az webapp deployment source config-zip --ids ${{ secrets.APP_IDS }} --src publish.zip
         working-directory: src/
 
 
