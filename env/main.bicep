@@ -4,22 +4,26 @@ param default_location string = 'northeurope'
 
 @description('A list of regions to deploy to, when a service requires primaries the assumption will be they are first in the array')
 param regions array = [
-  'northeurope'
-  'westeurope'
+  'North Europe'
+  'West Europe'
 ]
+
+var regions_lower_spaceless = [for region in regions: {
+  value: replace(toLower(region), ' ', '')
+}]
 
 resource cosmos_group 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: 'cosmos-failover'
   location: default_location
 }
 
-resource groups 'Microsoft.Resources/resourceGroups@2021-04-01' = [for region in regions: {
-  name: '${region}-cosmos-failover'
-  location: region
+resource groups 'Microsoft.Resources/resourceGroups@2021-04-01' = [for region in regions_lower_spaceless: {
+  name: '${region.value}-cosmos-failover'
+  location: region.value
 }]
 
-module insights 'insights.bicep' = [for (region, index) in regions: {
-  name: '${region}-insights'
+module insights 'insights.bicep' = [for (region, index) in regions_lower_spaceless: {
+  name: '${region.value}-insights'
   scope: groups[index]
   params: {
     location: groups[index].location
@@ -35,8 +39,8 @@ module cosmos 'cosmos.bicep' = {
   }
 }
 
-module networks 'networking.bicep' = [for (region, index) in regions: {
-  name: '${region}-networking'
+module networks 'networking.bicep' = [for (region, index) in regions_lower_spaceless: {
+  name: '${region.value}-networking'
   scope: groups[index]
   params: {
     location: groups[index].location
@@ -46,8 +50,8 @@ module networks 'networking.bicep' = [for (region, index) in regions: {
   }
 }]
 
-module app 'app.bicep' = [for (region, index) in regions: {
-  name: '${region}-app'
+module app 'app.bicep' = [for (region, index) in regions_lower_spaceless: {
+  name: '${region.value}-app'
   scope: groups[index]
   params: {
     location: groups[index].location
@@ -60,8 +64,8 @@ module app 'app.bicep' = [for (region, index) in regions: {
   }
 }]
 
-module role 'roles.bicep' = [for (region, index) in regions: {
-  name: '${region}-app-cosmos-role'
+module role 'roles.bicep' = [for (region, index) in regions_lower_spaceless: {
+  name: '${region.value}-app-cosmos-role'
   scope: cosmos_group
 
   params: {
