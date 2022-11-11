@@ -13,6 +13,19 @@ resource cosmos_group 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: default_location
 }
 
+resource groups 'Microsoft.Resources/resourceGroups@2021-04-01' = [for region in regions: {
+  name: '${region}-cosmos-failover'
+  location: region
+}]
+
+module insights 'insights.bicep' = [for (region, index) in regions: {
+  name: '${region}-insights'
+  scope: groups[index]
+  params: {
+    location: groups[index].location
+  }
+}]
+
 module cosmos 'cosmos.bicep' = {
   name: 'cosmos'
   scope: cosmos_group
@@ -21,11 +34,6 @@ module cosmos 'cosmos.bicep' = {
     location: default_location
   }
 }
-
-resource groups 'Microsoft.Resources/resourceGroups@2021-04-01' = [for region in regions: {
-  name: '${region}-cosmos-failover'
-  location: region
-}]
 
 module networks 'networking.bicep' = [for (region, index) in regions: {
   name: '${region}-networking'
@@ -47,6 +55,7 @@ module app 'app.bicep' = [for (region, index) in regions: {
     cosmos_uri: networks[index].outputs.cosmos_uri
     cosmos_db_name: cosmos.outputs.db_name
     cosmos_container_name: cosmos.outputs.container_name
+    app_insights_key: insights[index].outputs.app_insights_key
   }
 }]
 

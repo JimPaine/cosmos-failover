@@ -5,6 +5,7 @@ param compute_subnet_id string
 param cosmos_uri string
 param cosmos_db_name string
 param cosmos_container_name string
+param app_insights_key string
 
 var suffix = uniqueString(subscription().id, resourceGroup().id)
 
@@ -58,6 +59,10 @@ resource app 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: 'DEPLOYED_REGION'
           value: location
+        }
+        {
+          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+          value: app_insights_key
         }
       ]
     }
