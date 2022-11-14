@@ -58,7 +58,7 @@ module app 'app.bicep' = [for (region, index) in regions_lower_spaceless: {
   params: {
     location: regions[index]
     compute_subnet_id: networks[index].outputs.compute_subnet_id
-    cosmos_uri: 'https://${cosmos.outputs.cosmos_uri}'
+    cosmos_uri: cosmos.outputs.cosmos_uri
     cosmos_db_name: cosmos.outputs.db_name
     cosmos_container_name: cosmos.outputs.container_name
     app_insights_key: insights[index].outputs.app_insights_key
