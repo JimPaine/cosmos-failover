@@ -27,12 +27,20 @@ resource farm 'Microsoft.Web/serverfarms@2022-03-01' = {
   }
 }
 
+resource user_identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
+  name: 'app-msi-${suffix}'
+  location: location
+}
+
 resource app 'Microsoft.Web/sites@2022-03-01' = {
   name: 'app${suffix}'
   location: location
 
   identity: {
-    type: 'SystemAssigned'
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${user_identity.id}' : {}
+    }
   }
 
   properties: {
@@ -69,10 +77,14 @@ resource app 'Microsoft.Web/sites@2022-03-01' = {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
           value: app_insights_connection_string
         }
+        {
+          name: 'USER_ASSIGNED_ID'
+          value: user_identity.properties.principalId
+        }
       ]
     }
   }
 }
 
-output app_principalId string = app.identity.principalId
+output app_principalId string = user_identity.properties.principalId
 output app_id string = app.id
