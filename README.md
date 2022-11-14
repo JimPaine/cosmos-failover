@@ -11,6 +11,7 @@ Done
 - MSI enabled on app
 - sqlrole assigned to app
 - deeployed region injected to app config to allow for cosmos SDK setup.
+- added app insights
 
 ToDo
 - Create data
