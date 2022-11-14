@@ -100,6 +100,4 @@ resource dns_group 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2022
   }
 }
 
-output cosmos_endpoints array = endpoint.properties.customDnsConfigs
 output compute_subnet_id string = vnet.properties.subnets[0].id
-output cosmos_uri string = dns_group.properties.privateDnsZoneConfigs[0].properties.recordSets[0].fqdn
