@@ -66,6 +66,7 @@ module app 'app.bicep' = [for (region, index) in regions_lower_spaceless: {
   }
 }]
 
+@batchSize(1)
 module role 'roles.bicep' = [for (region, index) in regions_lower_spaceless: {
   name: '${region.value}-app-cosmos-role'
   scope: cosmos_group
