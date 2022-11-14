@@ -79,7 +79,7 @@ resource app 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'USER_ASSIGNED_ID'
-          value: user_identity.properties.principalId
+          value: user_identity.properties.clientId
         }
       ]
     }
