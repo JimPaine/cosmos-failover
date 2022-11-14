@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Linq;
 
 namespace src.Pages;
 
@@ -14,6 +15,8 @@ public class IndexModel : PageModel
     [Required]
     public string? OtherData { get; set; }
 
+    public List<Item> Items { get; set; } = new List<Item>();
+
     private readonly ILogger<IndexModel> logger;
     private readonly Container container;
 
@@ -23,20 +26,35 @@ public class IndexModel : PageModel
     {
         this.logger = logger;
         this.container = container;
+        try
+        {
+            var query = this.container.GetItemLinqQueryable<Item>().ToFeedIterator();
+
+            while (query.HasMoreResults)
+            {
+                foreach (var item in query.ReadNextAsync().Result)
+                {
+                    this.Items.Add(item);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            this.logger.LogError(e.InnerException?.Message ?? "Failed to query cosmos");
+        }
 
     }
 
-    public void OnGet()
-    {
-
-    }
+    public void OnGet() { }
 
     public async Task<IActionResult> OnPost(string PartionKey, string OtherData)
     {
         var item = new Item(Guid.NewGuid().ToString(), PartionKey, OtherData);
-        await this.container.CreateItemAsync(item, new PartitionKey(item.partionKey));
+        var response = await this.container.CreateItemAsync(item, new PartitionKey(item.partionKey));
+
+        this.Items.Add(item);
         return RedirectToPage();
     }
 }
 
-record Item(string id, string partionKey, string otherData);
+public record Item(string id, string partionKey, string otherData);
