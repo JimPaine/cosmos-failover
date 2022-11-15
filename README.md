@@ -1,5 +1,10 @@
 # cosmos-failover
 
+Register Provider
+```bash
+az provider register --name Microsoft.Chaos
+```
+
 Done
 - Networking deployment in 2 regions
 - Cosmos deployed with multi region writes
