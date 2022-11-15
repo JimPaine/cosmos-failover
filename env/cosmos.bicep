@@ -25,7 +25,7 @@ resource account 'Microsoft.DocumentDB/databaseAccounts@2022-05-15' = {
     locations: locations
     databaseAccountOfferType: 'Standard'
     enableAutomaticFailover: true
-    enableMultipleWriteLocations: true
+    enableMultipleWriteLocations: false
   }
 }
 
